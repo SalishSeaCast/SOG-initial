@@ -41,7 +41,7 @@ end
 for i=1:total_cruises  
      if (i ~= 45) % not cruise 45 as no data then
         x = nuts.cruise{i}
-        y = [DEPTH' NO3(:,1) SI(:,i)];         %'
+        y = [DEPTH' NO3(:,i) SI(:,i)];         %'
 	fid = ['Nuts_',x([1:2,4:5]),'.txt']
 	save (fid,'y','-ascii')
      end
