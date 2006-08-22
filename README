@@ -1,0 +1,10 @@
+bottle.m reads the bottle data files in the shared directory /ocean/shared
+and saves the S3 data in nuts.mat
+
+nuts_profile.m reads nuts.mat and interpolates the values onto a 0-40 m depth
+interval at 0.5 m increments.  It writes out the ascii files Nuts_cruiseid.txt
+which include three columns
+
+depth nitrate silicon
+(m)    (uM)    (uM)
+
