@@ -1,9 +1,135 @@
-bottle.m reads the bottle data files in the shared directory /ocean/shared
-and saves the S3 data in nuts.mat
+=====================================================
+ Strait of Georgia  Initialization Data for SOG Code
+=====================================================
 
-nuts_profile.m reads nuts.mat and interpolates the values onto a 0-40 m depth
-interval at 0.5 m increments.  It writes out the ascii files Nuts_cruiseid.txt
-which include three columns
+This directory contains initialization data files for the SOG code for runs
+in the Strait of Georgia.  The files are of 3 types, stored in
+separate sub-directories:
+
+* ctd - CTD profiles with SOG code readable headers
+* stratogem_nuts - Interpolated data from STRATOGEM cruise bottle
+  casts with SOG code readable headers
+* bottle_data - IOS bottle data  with SOG code readable headers
+
+
+File Name Conventions
+=====================
+
+The CTD data files are named according to the pattern:
+
+``SG-ss-yyyy-mm-dd.sog``
+
+where
+
+* ``SG`` indicates that the file is from Strait of Georgia
+* ``ss`` is the station id at which the data was collected; e.g. S3
+* ``yyyy`` is the year part of the date on which the data was collected
+* ``mm`` is the month part of the date on which the data was collected
+* ``dd`` is the day part of the date on which the data was collected
+* ``.sog`` indicates that the file has been formatted with a SOG code
+  readable header
+
+So, the CTD data file used to intialize the R4 run is
+``ctd/SG-S3-2004-10-19.sog``.  Data in ``SG-*.sog`` files can come
+from STRATOGEM cruise CTD casts, or from IOS cruises. 
+
+The STRATOGEM cruise bottle data files are named according to the
+pattern:
+
+``Nuts-ss-yyyy-mm-dd.sog``
+
+where
+
+* ``Nuts`` indicates that the data is interpolated from STRATOGEM
+cruise bottle casts
+* ``ss`` is the station id at which the data was collected; e.g. S3
+* ``yyyy`` is the year part of the date on which the data was collected
+* ``mm`` is the month part of the date on which the data was collected
+* ``dd`` is the day part of the date on which the data was collected
+* ``.sog`` indicates that the file has been formatted with a SOG code
+  readable header
+
+So, the Nuts data file used to intialize the R4 run is
+``stratogem_nuts/Nuts-S3-2004-10-19.sog``.  Data in ``Nuts-*.sog``
+files is produced by processing STRATOGEM bottle data files with the
+``bottle.m`` and ``nuts_profile.m`` MATLAB scripts (see below).
+
+The IOS bottle data files are named according to the pattern:
+
+``btl-ss-yyyy-mm-dd.sog``
+
+where
+
+* ``btl`` indicates that the data is from IOS cruise bottle casts
+* ``ss`` is the station id at which the data was collected; e.g. S3
+* ``yyyy`` is the year part of the date on which the data was collected
+* ``mm`` is the month part of the date on which the data was collected
+* ``dd`` is the day part of the date on which the data was collected
+* ``.sog`` indicates that the file has been formatted with a SOG code
+  readable header
+
+IOS bottle data is used to initialize runs from before and after the
+STRATOGEM project data collection period, i.e. before 2002 and after 2004.
+
+So, the bottle data file used to intialize the R1 run is
+``bottle_data/btl-S3-2001-mm-dd.sog``.
+
+
+SOG Code Readable Header Format
+===============================
+
+The SOG code readable header is 12 lines long.
+
+The first 11 lines start with an ``!`` character and are intended for
+human consumption:
+
+* Line 1 gives the column numbers and their widths in the form
+  ``---n---`` where the total number of characters is the column
+  width, and ``n`` is the column number
+* Lines 2 through 9 hold text descriptions of the column contents
+* Line 10 indicates the column widths again as groups of ``-`
+  characters, separated by spaces
+* Line 11 is `` ! Depth Temp Sal Chlor Fluores Nitrate Phyto Silicon``
+  where the words are data identifiers that must be in the order shown
+* Line 12 is a list of integers indicating in which column the data
+  items listed in line 11 appear.  If the data item is not included in
+  the file, or is not to be used from the file its index is set to
+  ``-1``.
+
+Here is an example of a header from a STRATOGEM CTD profile file::
+
+  !--2--- ---3---- --4--- ---5--- --6--- ---7---- --8---  ---9---  ---10---
+  !Pressu Temperat Conduc Fluores Beam	PAR	Oxygen: Salinity Density
+  !re     ure:     tivity cence:  Transm		Dissolv :T0:C0   
+  !       Primary         URU:    		ed:SBE           
+  !                       Seapoin                  
+  !                       t                        
+  !
+  !
+  !
+  !------ -------- ------ ------- ------- -------- ----
+  ! Depth Temp Sal Chlor Fluores Nitrate Phyto Silicon
+     2	   3    9   -1    5       -1      -1    -1
+
+
+Data File Processing Scripts
+============================
+
+The following MATLAB scripts process data files into into the formats
+found in this directory.
+
+``bottle.m``
+------------
+
+``bottle.m`` reads the bottle data files in the shared directory
+``/ocean/shared`` and saves the S3 data in ``nuts.mat``
+
+``nuts_profile.m``
+------------------
+
+``nuts_profile.m`` reads nuts.mat and interpolates the values onto a
+0-40 m depth interval at 0.5 m increments.  It writes out the ascii
+files ``Nuts_cruiseid.txt`` which include three columns
 
 depth nitrate silicon
 (m)    (uM)    (uM)
