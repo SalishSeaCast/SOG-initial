@@ -8,8 +8,8 @@
 !
 !
 ! -------------  -------------  -------------
-! Depth Temp Sal Chlor Fluores Nitrate Phyto Silicon
-   1	 -1   -1  -1    -1	2	-1    -1
+! Depth Temp Sal Chlor Fluores Nitrate Phyto Silicon DIC Oxy
+   1	 -1   -1  -1    -1	2	-1    -1     -1	 -1
    0.0000000e+00   3.6983333e+00
    5.0000000e+00   6.6217397e+00
    1.0000000e+01   1.4265245e+01
